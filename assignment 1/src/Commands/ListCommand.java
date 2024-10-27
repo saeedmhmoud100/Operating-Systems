@@ -1,5 +1,6 @@
 package Commands;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,4 +25,21 @@ public class ListCommand extends BaseCommand {
         System.out.println("  -R, --recursive            list subdirectories recursively");
         System.out.println("  -h, --human-readable       with -l and -s, print sizes like 1K 234M 2G etc.");
     }
+
+    @Override
+    public void executeCommand(String command) {
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win")) {
+            File dir = new File(System.getProperty("user.dir"));
+            File[] files = dir.listFiles();
+            if (files != null) {
+                for (File file : files) {
+                    System.out.println(file.getName());
+                }
+            }
+        } else {
+            super.executeCommand(command);
+        }
+    }
+
 }

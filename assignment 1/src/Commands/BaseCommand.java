@@ -46,33 +46,14 @@ public abstract class BaseCommand {
 
     protected String getFullCommand() {
         StringBuilder command;
-        String os = System.getProperty("os.name").toLowerCase();
-        if (os.contains("win")) {
-            command = new StringBuilder("cmd /c dir");
-            for (String arg : this.args) {
-                command.append(" ").append(arg);
-            }
-        }else{
-            command = new StringBuilder("ls");
-            for (String arg : this.args) {
-                command.append(" ").append(arg);
-            }
+        command = new StringBuilder(main_command);
+        for (String arg : this.args) {
+            command.append(" ").append(arg);
         }
         return command.toString();
     }
 
-    public void execute(List<String> args) {
-
-        if (!this.ValidateArgs(args)) {
-            return;
-        }
-        if(this.args.contains("-h") || this.args.contains("--help") || this.args.contains("-help") || this.args.contains("help")){
-            this.help();
-            return;
-        }
-
-
-        String command = this.getFullCommand();
+    protected void executeCommand(String command) {
         Runtime runtime = Runtime.getRuntime();
         try {
             Process process = runtime.exec(command);
@@ -90,6 +71,19 @@ public abstract class BaseCommand {
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public void execute(List<String> args) {
+
+        if (!this.ValidateArgs(args)) {
+            return;
+        }
+        if(this.args.contains("-h") || this.args.contains("--help") || this.args.contains("-help") || this.args.contains("help")){
+            this.help();
+            return;
+        }
+        String command = this.getFullCommand();
+        executeCommand(command);
     }
 
 
