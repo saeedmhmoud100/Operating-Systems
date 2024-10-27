@@ -22,6 +22,8 @@ public class HelpCommand extends BaseCommand{
         System.out.println("pwd - Show the current directory");
         System.out.println("clear - Clear the screen");
         System.out.println("date - Show the current date and time");
+        System.out.println(">> - Append text to a file");
+        System.out.println("> - Overwrite text to a file");
         System.out.println("help - Show this message");
         System.out.println("exit - Exit the program");
     }
