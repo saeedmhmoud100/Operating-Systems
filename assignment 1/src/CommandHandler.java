@@ -13,6 +13,7 @@ public class CommandHandler {
         commandMap = new HashMap<>();
         commandMap.put("ls", ListCommand.class);
         commandMap.put("cd", CdCommand.class);
+        commandMap.put("mkdir", mkdirCommand.class);
         commandMap.put("pwd", PwdCommand.class);
         commandMap.put("help", HelpCommand.class);
         scanner = new Scanner(System.in);

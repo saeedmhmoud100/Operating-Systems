@@ -5,8 +5,11 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 public abstract class BaseCommand {
+    boolean useRegex = false;
+    protected static final Pattern DIR_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_.-]+$");
 
     List<String> allArgsAvailable;
     String main_command;
@@ -14,12 +17,14 @@ public abstract class BaseCommand {
 
     protected BaseCommand(String main_command, List<String> allArgsAvailable) {
         this.main_command = main_command;
-        this.allArgsAvailable =new ArrayList<>(allArgsAvailable);;
+        this.allArgsAvailable = new ArrayList<>(allArgsAvailable);
+        ;
         this.allArgsAvailable.add("-h");
         this.allArgsAvailable.add("--help");
         this.allArgsAvailable.add("help");
         this.allArgsAvailable.add("-help");
     }
+
     abstract protected void help();
 
     protected boolean ValidateArgs(List<String> args) {
@@ -27,11 +32,17 @@ public abstract class BaseCommand {
         try {
             valid = true;
             if (!args.isEmpty()) {
-                for (int i = 0; i < args.size(); i++) {
-                    if (this.allArgsAvailable.contains(args.get(i))) {
-                        this.args.add(args.get(i));
+                for (String arg : args) {
+                    if (this.allArgsAvailable.contains(arg)) {
+                        this.args.add(arg);
                     } else {
-                        throw new IllegalArgumentException("Invalid argument: " + args.get(i));
+                        if(useRegex){
+                            if (DIR_NAME_PATTERN.matcher(arg).matches()) {
+                                this.args.add(arg);
+                            }
+                        }else{
+                            throw new IllegalArgumentException("Invalid argument: " + arg);
+                        }
                     }
                 }
             }
@@ -41,7 +52,6 @@ public abstract class BaseCommand {
         }
         return valid;
     }
-
 
 
     protected String getFullCommand() {
@@ -57,8 +67,7 @@ public abstract class BaseCommand {
     protected void executeCommandForLinux(String command) {
         Runtime runtime = Runtime.getRuntime();
         try {
-            Process process = runtime.exec(command);
-//            System.out.println("Executing command: " + process.toString());
+            Process process = runtime.exec(new String[]{"/bin/sh", "-c", command});
 
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
                 String line;
@@ -74,9 +83,12 @@ public abstract class BaseCommand {
         }
     }
 
-    protected void executeCommandForWindows(String command){
+    protected void executeCommandForWindows(String command) {
         this.executeCommandForLinux(command);
-    };
+    }
+
+    ;
+
     protected void executeCommand(String command) {
         String os = System.getProperty("os.name").toLowerCase();
         if (os.contains("win")) {
@@ -91,7 +103,7 @@ public abstract class BaseCommand {
         if (!this.ValidateArgs(args)) {
             return;
         }
-        if(this.args.contains("-h") || this.args.contains("--help") || this.args.contains("-help") || this.args.contains("help")){
+        if (this.args.contains("-h") || this.args.contains("--help") || this.args.contains("-help") || this.args.contains("help")) {
             this.help();
             return;
         }
