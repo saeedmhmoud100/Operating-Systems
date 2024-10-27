@@ -1,4 +1,4 @@
-import Commands.CommandInterface;
+import Commands.BaseCommand;
 import Commands.HelpCommand;
 import Commands.ListCommand;
 
@@ -22,23 +22,20 @@ public class CommandHandler {
         List input = this.getInput();
         String command = (String) input.get(0);
         List arguments = input.subList(1, input.size());
-        CommandInterface commandObj = null;
+        BaseCommand commandObj = null;
 
 
         if(command.equals("ls")) {
-            commandObj = new ListCommand(arguments);
+            commandObj = new ListCommand();
         }else if (command.equals("help")) {
             commandObj = new HelpCommand();
-
+        }else if(command.equals("exit")){
+            return false;
         }else{
             System.out.println("Command not found");
-            return false;
-
-
-
+            return true;
         }
-
-        commandObj.execute();
+        commandObj.execute(arguments);
         return true;
     }
 }

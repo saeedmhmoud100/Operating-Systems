@@ -1,15 +1,14 @@
 package Commands;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class ListCommand implements CommandInterface{
+public class ListCommand extends BaseCommand {
+    List<String> allArgsAvailable = List.of("-a", "-l", "-h");
+    String main_command = "ls";
+    List<String> args = new ArrayList<String>();
+    boolean valid = true;
     public ListCommand() {
-
-    }
-    public ListCommand(List args) {
-        System.out.println("List command created with args: " + args);
-    }
-    public void execute() {
-        System.out.println("List executed");
+        super("ls", List.of("-a", "-l", "-h"));
     }
 }
