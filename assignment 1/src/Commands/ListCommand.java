@@ -27,7 +27,7 @@ public class ListCommand extends BaseCommand {
 
     @Override
     protected void executeCommandForWindows(String command) {
-        File dir = new File(System.getProperty("user.dir"));
+        File dir = BaseCommand.currentPath.toFile();
         File[] files = dir.listFiles();
         if (files != null) {
             for (File file : files) {

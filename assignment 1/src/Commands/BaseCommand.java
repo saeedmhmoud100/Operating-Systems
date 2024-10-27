@@ -3,14 +3,15 @@ package Commands;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
 public abstract class BaseCommand {
+    public static Path currentPath;
     boolean useRegex = false;
     protected static final Pattern DIR_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_.-]+$");
-
     List<String> allArgsAvailable;
     String main_command;
     List<String> args = new ArrayList<String>();
@@ -18,7 +19,6 @@ public abstract class BaseCommand {
     protected BaseCommand(String main_command, List<String> allArgsAvailable) {
         this.main_command = main_command;
         this.allArgsAvailable = new ArrayList<>(allArgsAvailable);
-        ;
         this.allArgsAvailable.add("-h");
         this.allArgsAvailable.add("--help");
         this.allArgsAvailable.add("help");
@@ -86,8 +86,6 @@ public abstract class BaseCommand {
     protected void executeCommandForWindows(String command) {
         this.executeCommandForLinux(command);
     }
-
-    ;
 
     protected void executeCommand(String command) {
         String os = System.getProperty("os.name").toLowerCase();

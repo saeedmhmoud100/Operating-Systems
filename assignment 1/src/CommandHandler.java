@@ -1,5 +1,6 @@
 import Commands.*;
 
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,8 @@ public class CommandHandler {
     private Map<String, Class<? extends BaseCommand>> commandMap;
 
     public CommandHandler() {
+        BaseCommand.currentPath = Path.of(System.getProperty("user.dir"));
+
         commandMap = new HashMap<>();
         commandMap.put("ls", ListCommand.class);
         commandMap.put("cd", CdCommand.class);
@@ -57,7 +60,7 @@ public class CommandHandler {
     public void run(){
         System.out.println("Welcome to the Command Line System! Type 'help' for commands.");
         while (true) {
-            String currentPath = System.getProperty("user.dir");
+            String currentPath = BaseCommand.currentPath.toString();
             System.out.print("(Command Line) "+currentPath +"> ");
             if (!this.executeCommand()) {
                 break;

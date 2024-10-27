@@ -15,6 +15,6 @@ public class PwdCommand extends BaseCommand{
 
     @Override
     protected void executeCommandForWindows(String command) {
-        System.out.println(System.getProperty("user.dir"));
+        System.out.println(BaseCommand.currentPath.toString());
     }
 }

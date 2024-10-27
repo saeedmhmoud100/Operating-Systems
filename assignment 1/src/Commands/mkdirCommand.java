@@ -1,5 +1,7 @@
 package Commands;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 public class mkdirCommand extends BaseCommand{
@@ -16,22 +18,12 @@ public class mkdirCommand extends BaseCommand{
 
 
     @Override
-    protected void executeCommandForLinux(String command) {
+    protected void executeCommand(String command) {
         try {
-            Process process = Runtime.getRuntime().exec(new String[] {"/bin/bash", "-c", command});
-            process.waitFor();
+            Path fullPath = BaseCommand.currentPath.resolve(this.args.get(0));
+            Files.createDirectories(fullPath);
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    protected void executeCommandForWindows(String command) {
-        try {
-            Process process = Runtime.getRuntime().exec("cmd /c " + command);
-            process.waitFor();
-        } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
     }
 }

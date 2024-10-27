@@ -1,6 +1,7 @@
 package Commands;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.List;
 
 public class CdCommand extends BaseCommand {
@@ -17,31 +18,15 @@ public class CdCommand extends BaseCommand {
     }
 
     @Override
-    protected void executeCommandForLinux(String Command){
-        String newDir = System.getProperty("user.dir");
+    protected void executeCommand(String Command){
+        Path newDir = BaseCommand.currentPath;
         if (args.get(0).equals("../") || args.get(0).equals("..")) {
-            newDir = newDir.substring(0, newDir.lastIndexOf("/"));
+            newDir = newDir.resolve("../").normalize();
         } else {
-            newDir = newDir + "/" + args.get(0);
+            newDir = newDir.resolve(args.get(0));
         }
-        File dir = new File(newDir);
-        if (dir.exists() && dir.isDirectory()) {
-            System.setProperty("user.dir", newDir);
-        } else {
-            System.out.println("Directory does not exist");
-        }
-    }
-    @Override
-    protected void executeCommandForWindows(String Command) {
-        String newDir = System.getProperty("user.dir");
-        if (args.get(0).equals("../") || args.get(0).equals("..")) {
-            newDir = newDir.substring(0, newDir.lastIndexOf("\\"));
-        } else {
-            newDir = newDir + "\\" + args.get(0);
-        }
-        File dir = new File(newDir);
-        if (dir.exists() && dir.isDirectory()) {
-            System.setProperty("user.dir", newDir);
+        if (Files.exists(newDir) && Files.isDirectory(newDir)) {
+            BaseCommand.currentPath = newDir;
         } else {
             System.out.println("Directory does not exist");
         }
