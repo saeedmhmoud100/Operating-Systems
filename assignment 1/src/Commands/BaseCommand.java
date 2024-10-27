@@ -16,9 +16,13 @@ public abstract class BaseCommand {
         this.main_command = main_command;
         this.allArgsAvailable =new ArrayList<>(allArgsAvailable);;
         this.allArgsAvailable.add("-h");
+        this.allArgsAvailable.add("--help");
+        this.allArgsAvailable.add("help");
+        this.allArgsAvailable.add("-help");
     }
+    abstract protected void help();
 
-    private boolean ValidateArgs(List<String> args) {
+    protected boolean ValidateArgs(List<String> args) {
         boolean valid = false;
         try {
             valid = true;
@@ -38,12 +42,9 @@ public abstract class BaseCommand {
         return valid;
     }
 
-    public void execute(List<String> args) {
 
-        if (!this.ValidateArgs(args)) {
-            return;
-        }
 
+    protected String getFullCommand() {
         StringBuilder command;
         String os = System.getProperty("os.name").toLowerCase();
         if (os.contains("win")) {
@@ -57,10 +58,24 @@ public abstract class BaseCommand {
                 command.append(" ").append(arg);
             }
         }
+        return command.toString();
+    }
 
+    public void execute(List<String> args) {
+
+        if (!this.ValidateArgs(args)) {
+            return;
+        }
+        if(this.args.contains("-h") || this.args.contains("--help") || this.args.contains("-help") || this.args.contains("help")){
+            this.help();
+            return;
+        }
+
+
+        String command = this.getFullCommand();
         Runtime runtime = Runtime.getRuntime();
         try {
-            Process process = runtime.exec(command.toString());
+            Process process = runtime.exec(command);
             System.out.println("Executing command: " + process.toString());
 
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {

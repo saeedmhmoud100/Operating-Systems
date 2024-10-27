@@ -25,4 +25,9 @@ public class HelpCommand extends BaseCommand{
         System.out.println("help - Show this message");
         System.out.println("exit - Exit the program");
     }
+
+    @Override
+    protected void help() {
+        System.out.println("Usage: help");
+    }
 }
