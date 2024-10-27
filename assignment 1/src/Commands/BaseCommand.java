@@ -53,7 +53,8 @@ public abstract class BaseCommand {
         return command.toString();
     }
 
-    protected void executeCommand(String command) {
+
+    protected void executeCommandForLinux(String command) {
         Runtime runtime = Runtime.getRuntime();
         try {
             Process process = runtime.exec(command);
@@ -70,6 +71,18 @@ public abstract class BaseCommand {
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
+        }
+    }
+
+    protected void executeCommandForWindows(String command){
+        this.executeCommandForLinux(command);
+    };
+    protected void executeCommand(String command) {
+        String os = System.getProperty("os.name").toLowerCase();
+        if (os.contains("win")) {
+            executeCommandForWindows(command);
+        } else {
+            executeCommandForLinux(command);
         }
     }
 

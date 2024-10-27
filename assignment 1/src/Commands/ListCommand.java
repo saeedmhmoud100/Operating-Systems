@@ -27,18 +27,13 @@ public class ListCommand extends BaseCommand {
     }
 
     @Override
-    public void executeCommand(String command) {
-        String os = System.getProperty("os.name").toLowerCase();
-        if (os.contains("win")) {
-            File dir = new File(System.getProperty("user.dir"));
-            File[] files = dir.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    System.out.println(file.getName());
-                }
+    protected void executeCommandForWindows(String command) {
+        File dir = new File(System.getProperty("user.dir"));
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                System.out.println(file.getName());
             }
-        } else {
-            super.executeCommand(command);
         }
     }
 
