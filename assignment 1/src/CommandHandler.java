@@ -2,13 +2,19 @@ import Commands.BaseCommand;
 import Commands.HelpCommand;
 import Commands.ListCommand;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class CommandHandler {
     private Scanner scanner;
+    private Map<String, Class<? extends BaseCommand>> commandMap;
 
     public CommandHandler() {
+        commandMap = new HashMap<>();
+        commandMap.put("ls", ListCommand.class);
+        commandMap.put("help", HelpCommand.class);
         scanner = new Scanner(System.in);
     }
 
@@ -25,17 +31,37 @@ public class CommandHandler {
         BaseCommand commandObj = null;
 
 
-        if(command.equals("ls")) {
-            commandObj = new ListCommand();
-        }else if (command.equals("help")) {
-            commandObj = new HelpCommand();
-        }else if(command.equals("exit")){
-            return false;
-        }else{
+        Class<? extends BaseCommand> commandClass = commandMap.get(command);
+
+        if (commandClass != null) {
+            try {
+                if (commandClass == ListCommand.class) {
+                    commandObj = new ListCommand();
+                } else {
+                    commandObj = commandClass.getDeclaredConstructor().newInstance();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            }
+        } else {
             System.out.println("Command not found");
             return true;
         }
         commandObj.execute(arguments);
         return true;
+    }
+
+
+    public void run(){
+        System.out.println("Welcome to the Command Line System! Type 'help' for commands.");
+        while (true) {
+            String currentPath = System.getProperty("user.dir");
+            System.out.print("(Command Line) "+currentPath +"> ");
+            if (!this.executeCommand()) {
+                break;
+            }
+            System.out.print('\n');
+        }
     }
 }
