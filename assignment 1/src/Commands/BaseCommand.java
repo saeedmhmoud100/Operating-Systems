@@ -14,7 +14,8 @@ public abstract class BaseCommand {
 
     protected BaseCommand(String main_command, List<String> allArgsAvailable) {
         this.main_command = main_command;
-        this.allArgsAvailable = allArgsAvailable;
+        this.allArgsAvailable =new ArrayList<>(allArgsAvailable);;
+        this.allArgsAvailable.add("-h");
     }
 
     private boolean ValidateArgs(List<String> args) {
