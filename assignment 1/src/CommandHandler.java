@@ -1,7 +1,4 @@
-import Commands.BaseCommand;
-import Commands.HelpCommand;
-import Commands.ListCommand;
-import Commands.PwdCommand;
+import Commands.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +12,7 @@ public class CommandHandler {
     public CommandHandler() {
         commandMap = new HashMap<>();
         commandMap.put("ls", ListCommand.class);
+        commandMap.put("cd", CdCommand.class);
         commandMap.put("pwd", PwdCommand.class);
         commandMap.put("help", HelpCommand.class);
         scanner = new Scanner(System.in);

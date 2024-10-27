@@ -58,7 +58,7 @@ public abstract class BaseCommand {
         Runtime runtime = Runtime.getRuntime();
         try {
             Process process = runtime.exec(command);
-            System.out.println("Executing command: " + process.toString());
+//            System.out.println("Executing command: " + process.toString());
 
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
                 String line;
