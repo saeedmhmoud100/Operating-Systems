@@ -18,6 +18,7 @@ public class CommandHandler {
         commandMap.put("cd", CdCommand.class);
         commandMap.put("mkdir", mkdirCommand.class);
         commandMap.put("pwd", PwdCommand.class);
+        commandMap.put("date", DateCommand.class);
         commandMap.put("help", HelpCommand.class);
         scanner = new Scanner(System.in);
     }
