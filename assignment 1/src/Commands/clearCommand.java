@@ -5,7 +5,7 @@ import java.util.List;
 public class clearCommand extends BaseCommand{
     public clearCommand() {
         super("clear", List.of());
-        this.maxArgs = 0;
+        this.maxArgs = 1;
 
     }
 

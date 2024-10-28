@@ -10,7 +10,7 @@ public class mvCommand extends BaseCommand{
     public mvCommand() {
         super("mv", List.of());
         this.useRegex = true;
-        this.minArgs = 2;
+        this.minArgs = 1;
         this.maxArgs = 2;
     }
 
@@ -35,11 +35,12 @@ public class mvCommand extends BaseCommand{
                 if(!Files.exists(source)){
                     throw new IllegalArgumentException("mv: cannot move '" + fileName + "': No such file or directory");
                 }
-                Path destination = Paths.get(args.get(1)).resolve(fileName);
+                Path destination = Paths.get(args.get(1));
                 if(!Files.exists(destination) || !Files.isDirectory(destination)){
-                    throw new IllegalArgumentException("mv: cannot move '" + fileName + "': No such file or directory");
+                    System.out.println(source);
+                    throw new IllegalArgumentException("mv: cannot move '" + destination + "': No such file or directory");
                 }
-                Files.move(source, destination);
+                Files.move(source, destination.resolve(source.getFileName()));
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }

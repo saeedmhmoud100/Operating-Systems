@@ -5,7 +5,7 @@ import java.util.List;
 public class HelpCommand extends BaseCommand{
     public HelpCommand() {
         super("help", List.of());
-        this.maxArgs = 0;
+        this.maxArgs = 1;
     }
 
     @Override

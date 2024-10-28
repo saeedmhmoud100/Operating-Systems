@@ -5,7 +5,7 @@ import java.util.List;
 public class exitCommand extends BaseCommand{
     public exitCommand() {
         super("exit", List.of());
-        this.maxArgs = 0;
+        this.maxArgs = 1;
 
     }
 
