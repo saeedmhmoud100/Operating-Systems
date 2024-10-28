@@ -56,8 +56,8 @@ public abstract class BaseCommand {
 
     protected String getFullCommand() {
         StringBuilder command;
-        String currentPath = BaseCommand.currentPath.toString();
-        command = new StringBuilder("cd '" + currentPath + "' && "+ main_command);
+
+        command = new StringBuilder(main_command);
         for (String arg : this.args) {
             command.append(" ").append(arg);
         }
@@ -68,24 +68,35 @@ public abstract class BaseCommand {
     protected void executeCommandForLinux(String command) {
         Runtime runtime = Runtime.getRuntime();
         try {
-            Process process = runtime.exec(new String[]{"/bin/sh", "-c",command});
+            String currentPath = BaseCommand.currentPath.toString();
+            Process process = runtime.exec(new String[]{"/bin/sh", "-c","cd '" + currentPath + "' && "+command});
 
-            try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    System.out.println(line);
-                }
-                int exitCode = process.waitFor();
-            } catch (InterruptedException e) {
-                System.out.println("Process was interrupted: " + e.getMessage());
-            }
+            ProcessOutput(process);
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
     }
 
     protected void executeCommandForWindows(String command) {
-        this.executeCommandForLinux(command);
+        Runtime runtime = Runtime.getRuntime();
+        try {
+            Process process = runtime.exec(new String[]{"cmd", "/c", command});
+            ProcessOutput(process);
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private void ProcessOutput(Process process) throws IOException {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+            int exitCode = process.waitFor();
+        } catch (InterruptedException e) {
+            System.out.println("Process was interrupted: " + e.getMessage());
+        }
     }
 
     protected void executeCommand(String command) {
