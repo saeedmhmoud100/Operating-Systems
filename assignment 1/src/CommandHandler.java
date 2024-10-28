@@ -23,6 +23,7 @@ public class CommandHandler {
         commandMap.put("cat", catCommand.class);
         commandMap.put("clear", clearCommand.class);
         commandMap.put("help", HelpCommand.class);
+        commandMap.put("exit", exitCommand.class);
         scanner = new Scanner(System.in);
     }
 
@@ -54,6 +55,9 @@ public class CommandHandler {
     public boolean executeCommand() {
 
         List input = this.getInput();
+        if (input.size() == 0) {
+            return true;
+        }
         String command = (String) input.get(0);
         List arguments = input.subList(1, input.size());
         BaseCommand commandObj = null;
@@ -63,9 +67,9 @@ public class CommandHandler {
 
         if (commandClass != null) {
             try {
-                if (commandClass == ListCommand.class) {
-                    commandObj = new ListCommand();
-                } else {
+                if(commandClass == exitCommand.class){
+                    return false;
+                }else{
                     commandObj = commandClass.getDeclaredConstructor().newInstance();
                 }
             } catch (Exception e) {

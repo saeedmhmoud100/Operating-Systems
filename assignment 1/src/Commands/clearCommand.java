@@ -18,10 +18,11 @@ public class clearCommand extends BaseCommand{
     @Override
     protected void executeCommandForWindows(String command) {
         try {
-            new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
-//            protected void clearScreen() {
-//                System.out.println("\n".repeat(50)); // Prints 50 new lines to simulate clearing
-//            }
+            if(System.console() != null){
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            }else{
+                    System.out.println("\n".repeat(50));
+            }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
