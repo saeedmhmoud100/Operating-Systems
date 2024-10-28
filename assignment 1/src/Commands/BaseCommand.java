@@ -84,7 +84,8 @@ public abstract class BaseCommand {
     protected void executeCommandForWindows(String command) {
         Runtime runtime = Runtime.getRuntime();
         try {
-            Process process = runtime.exec(new String[]{"cmd", "/c", command});
+            String fullCommand = "cd /d \"" + BaseCommand.currentPath.toString() + "\" && " + command;
+            Process process = runtime.exec(new String[]{"cmd", "/c", fullCommand});
             ProcessOutput(process);
         } catch (IOException e) {
             System.out.println(e.getMessage());

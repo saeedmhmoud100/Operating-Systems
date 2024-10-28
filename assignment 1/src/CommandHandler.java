@@ -1,10 +1,7 @@
 import Commands.*;
 
 import java.nio.file.Path;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class CommandHandler {
     private Scanner scanner;
@@ -19,6 +16,7 @@ public class CommandHandler {
         commandMap.put("mkdir", mkdirCommand.class);
         commandMap.put("rmdir", rmdirCommand.class);
         commandMap.put("rm", rmCommand.class);
+        commandMap.put("mv", mvCommand.class);
         commandMap.put("pwd", PwdCommand.class);
         commandMap.put("date", DateCommand.class);
         commandMap.put("touch", TouchCommand.class);
@@ -27,9 +25,29 @@ public class CommandHandler {
         scanner = new Scanner(System.in);
     }
 
-    private List getInput() {
+    private List<String> getInput() {
         String input = scanner.nextLine();
-        return List.of(input.split(" "));
+        List<String> args = new ArrayList<>();
+        boolean inQuotes = false;
+
+        StringBuilder currentArg = new StringBuilder();
+
+        for (char c : input.toCharArray()) {
+            if (c == '\"') {
+                inQuotes = !inQuotes;
+            } else if (c == ' ' && !inQuotes) {
+                if (currentArg.length() > 0) {
+                    args.add(currentArg.toString());
+                    currentArg.setLength(0);
+                }
+            } else {
+                currentArg.append(c);
+            }
+        }
+        if (currentArg.length() > 0) {
+            args.add(currentArg.toString());
+        }
+        return args;
     }
 
     public boolean executeCommand() {
