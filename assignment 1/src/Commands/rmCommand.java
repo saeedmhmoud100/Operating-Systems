@@ -8,6 +8,8 @@ public class rmCommand extends BaseCommand{
     public rmCommand() {
         super("rm", List.of());
         this.useRegex = true;
+        this.minArgs = 1;
+        this.maxArgs = 1;
     }
 
     @Override

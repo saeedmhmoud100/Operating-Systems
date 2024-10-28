@@ -11,6 +11,8 @@ import java.util.regex.Pattern;
 public abstract class BaseCommand {
     public static Path currentPath;
     boolean useRegex = false;
+    int minArgs = 0;
+    int maxArgs = Integer.MAX_VALUE;
     protected static final Pattern RegexPattern = Pattern.compile("^[a-zA-Z0-9_.-]+$");
     List<String> allArgsAvailable;
     String main_command;
@@ -34,6 +36,15 @@ public abstract class BaseCommand {
     protected boolean ValidateArgs(List<String> args) {
         boolean valid = false;
         try {
+
+            if (args.size() < this.minArgs || args.size() > this.maxArgs) {
+                valid = false;
+                throw new IllegalArgumentException("Invalid number of arguments"
+                        + " Expected: " + this.minArgs + " to " + this.maxArgs
+                        + "\nGot: " + args.size()
+                        + "\nUse " + this.main_command + " -h or --help for help");
+            }
+
             valid = true;
             if (!args.isEmpty()) {
                 for (String arg : args) {

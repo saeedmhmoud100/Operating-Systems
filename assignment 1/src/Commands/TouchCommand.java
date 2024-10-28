@@ -9,6 +9,8 @@ public class TouchCommand extends BaseCommand {
     public TouchCommand() {
         super("touch", List.of());
         this.useRegex = true;
+        this.minArgs = 1;
+        this.maxArgs = 1;
     }
 
     @Override

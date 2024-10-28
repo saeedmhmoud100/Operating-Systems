@@ -8,6 +8,8 @@ public class catCommand extends BaseCommand{
     public catCommand() {
         super("cat", List.of());
         this.useRegex = true;
+        this.minArgs = 1;
+        this.maxArgs = 1;
     }
 
     @Override

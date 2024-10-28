@@ -6,6 +6,8 @@ import java.util.List;
 public class ListCommand extends BaseCommand {
     public ListCommand() {
         super("ls", List.of("-A", "-a", "--all", "-l", "-r", "--reverse", "-t", "-S", "-R", "--recursive", "-h", "--human-readable"));
+        this.minArgs = 0;
+        this.maxArgs = 1;
     }
 
     @Override

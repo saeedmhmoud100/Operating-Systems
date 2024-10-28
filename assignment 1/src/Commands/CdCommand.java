@@ -9,6 +9,8 @@ public class CdCommand extends BaseCommand {
     public CdCommand() {
         super("cd", List.of("../", ".."));
         this.useRegex = true;
+        this.minArgs = 1;
+        this.maxArgs = 1;
     }
 
     @Override

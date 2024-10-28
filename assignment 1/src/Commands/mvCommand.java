@@ -10,6 +10,8 @@ public class mvCommand extends BaseCommand{
     public mvCommand() {
         super("mv", List.of());
         this.useRegex = true;
+        this.minArgs = 2;
+        this.maxArgs = 2;
     }
 
     @Override

@@ -5,6 +5,8 @@ import java.util.List;
 public class PwdCommand extends BaseCommand{
     public PwdCommand() {
         super("pwd", List.of());
+        this.maxArgs = 0;
+
     }
 
     @Override

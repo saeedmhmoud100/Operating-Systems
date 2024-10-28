@@ -8,6 +8,8 @@ public class rmdirCommand extends BaseCommand{
     public rmdirCommand() {
         super("rmdir", List.of());
         this.useRegex = true;
+        this.minArgs = 1;
+        this.maxArgs = 1;
     }
 
     @Override

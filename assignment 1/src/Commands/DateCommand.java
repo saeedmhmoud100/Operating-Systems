@@ -5,6 +5,7 @@ import java.util.List;
 public class DateCommand extends BaseCommand{
     public DateCommand() {
         super("date", List.of());
+        this.maxArgs = 0;
     }
 
     @Override
