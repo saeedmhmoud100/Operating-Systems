@@ -21,6 +21,7 @@ public class CommandHandler {
         commandMap.put("date", DateCommand.class);
         commandMap.put("touch", TouchCommand.class);
         commandMap.put("cat", catCommand.class);
+        commandMap.put("clear", clearCommand.class);
         commandMap.put("help", HelpCommand.class);
         scanner = new Scanner(System.in);
     }
