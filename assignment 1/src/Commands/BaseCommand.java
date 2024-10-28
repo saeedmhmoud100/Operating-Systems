@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public abstract class BaseCommand {
     public static Path currentPath;
     boolean useRegex = false;
-    protected static final Pattern DIR_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_.-]+$");
+    protected static final Pattern RegexPattern = Pattern.compile("^[a-zA-Z0-9_.-]+$");
     List<String> allArgsAvailable;
     String main_command;
     List<String> args = new ArrayList<String>();
@@ -27,6 +27,10 @@ public abstract class BaseCommand {
 
     abstract protected void help();
 
+
+    protected Pattern getRegexPattern() {
+        return RegexPattern;
+    }
     protected boolean ValidateArgs(List<String> args) {
         boolean valid = false;
         try {
@@ -37,7 +41,7 @@ public abstract class BaseCommand {
                         this.args.add(arg);
                     } else {
                         if(useRegex){
-                            if (DIR_NAME_PATTERN.matcher(arg).matches()) {
+                            if (getRegexPattern().matcher(arg).matches()) {
                                 this.args.add(arg);
                             }
                         }else{
