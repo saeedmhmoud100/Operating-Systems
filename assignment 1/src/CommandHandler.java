@@ -17,6 +17,7 @@ public class CommandHandler {
         commandMap.put("rmdir", rmdirCommand.class);
         commandMap.put("rm", rmCommand.class);
         commandMap.put("mv", mvCommand.class);
+        commandMap.put("cp", cpCommand.class);
         commandMap.put("pwd", PwdCommand.class);
         commandMap.put("date", DateCommand.class);
         commandMap.put("touch", TouchCommand.class);
