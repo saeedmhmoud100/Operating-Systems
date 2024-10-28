@@ -56,7 +56,8 @@ public abstract class BaseCommand {
 
     protected String getFullCommand() {
         StringBuilder command;
-        command = new StringBuilder(main_command);
+        String currentPath = BaseCommand.currentPath.toString();
+        command = new StringBuilder("cd '" + currentPath + "' && "+ main_command);
         for (String arg : this.args) {
             command.append(" ").append(arg);
         }
@@ -67,7 +68,7 @@ public abstract class BaseCommand {
     protected void executeCommandForLinux(String command) {
         Runtime runtime = Runtime.getRuntime();
         try {
-            Process process = runtime.exec(new String[]{"/bin/sh", "-c", command});
+            Process process = runtime.exec(new String[]{"/bin/sh", "-c",command});
 
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
                 String line;
