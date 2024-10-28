@@ -27,6 +27,7 @@ public class CdCommand extends BaseCommand {
         }
         if (Files.exists(newDir) && Files.isDirectory(newDir)) {
             BaseCommand.currentPath = newDir;
+            System.setProperty("user.dir", newDir.toString());
         } else {
             System.out.println("Directory does not exist");
         }
