@@ -57,7 +57,7 @@ public abstract class BaseCommand {
             if (args.size() < this.minArgs || args.size() > this.maxArgs + additionalArgs) {
                 valid = false;
                 throw new IllegalArgumentException("Invalid number of arguments"
-                        + " Expected: " + this.minArgs + " to " + this.maxArgs + additionalArgs
+                        + " Expected: " + this.minArgs + " to " + (this.maxArgs + additionalArgs)
                         + "\nGot: " + args.size()
                         + "\nUse " + this.main_command + " -h or --help for help");
             }
