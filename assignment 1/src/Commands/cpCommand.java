@@ -10,7 +10,7 @@ public class cpCommand extends BaseCommand{
     public cpCommand() {
         super("mv", List.of());
         this.useRegex = true;
-        this.minArgs = 1;
+        this.minArgs = 2;
         this.maxArgs = 2;
     }
 
