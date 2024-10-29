@@ -12,12 +12,15 @@ public abstract class BaseCommand {
     int minArgs = 0;
     int maxArgs = Integer.MAX_VALUE;
     int outputToFileIndex = -1;
-    protected static final Pattern RegexPattern = Pattern.compile("^[a-zA-Z0-9_.-]+$");
+    protected static final Pattern RegexPattern = Pattern.compile("^[a-zA-Z0-9_.\\-/:\\\\ ]+$");
     List<String> allArgsAvailable;
     String main_command;
     List<String> args = new ArrayList<String>();
 
     protected BaseCommand(String main_command, List<String> allArgsAvailable) {
+        if(currentPath == null){
+            currentPath = Path.of(System.getProperty("user.dir"));
+        }
         this.main_command = main_command;
         this.allArgsAvailable = new ArrayList<>(allArgsAvailable);
         this.allArgsAvailable.add("-h");
@@ -142,7 +145,7 @@ public abstract class BaseCommand {
         return result.toString();
     }
 
-    protected void print(String data){
+    protected String print(String data){
         if(this.outputToFileIndex != -1) {
             String fileName = this.args.get(this.outputToFileIndex);
             try {
@@ -155,6 +158,7 @@ public abstract class BaseCommand {
         }else{
             System.out.println(data);
         }
+        return data;
     }
     protected String executeCommand(String command) {
         String os = System.getProperty("os.name").toLowerCase();
@@ -166,20 +170,24 @@ public abstract class BaseCommand {
         }
         return result;
     }
-    public final void execute(List<String> args) {
+
+    public final String execute() {
+        return execute(List.of());
+    }
+    public final String execute(List<String> args) {
 
         if (!this.ValidateArgs(args)) {
-            return;
+            return "";
         }
         if (this.args.contains("-h") || this.args.contains("--help") || this.args.contains("-help") || this.args.contains("help")) {
-            print(help());
-            return;
+            return print(help());
         }
         String command = this.getFullCommand();
         String result = executeCommand(command);
         if(!result.isEmpty()){
-            print(result);
+            return print(result);
         }
+        return "";
     }
 
 

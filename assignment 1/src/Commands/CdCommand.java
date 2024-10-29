@@ -23,6 +23,10 @@ public class CdCommand extends BaseCommand {
     protected String executeCommand(String Command){
         StringBuilder result = new StringBuilder();
         Path newDir = BaseCommand.currentPath;
+        if (args.isEmpty()) {
+            result.append("No directory specified");
+            return result.toString();
+        }
         if (args.get(0).equals("../") || args.get(0).equals("..")) {
             newDir = newDir.resolve("../").normalize();
         } else {

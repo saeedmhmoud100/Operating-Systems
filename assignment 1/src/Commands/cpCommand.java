@@ -21,11 +21,6 @@ public class cpCommand extends BaseCommand{
     }
 
     @Override
-    protected Pattern getRegexPattern() {
-        return Pattern.compile("^[a-zA-Z0-9_.\\-/:\\\\ ]+$");
-    }
-
-    @Override
     protected String executeCommand(String Command) {
         StringBuilder result = new StringBuilder();
         Path source = BaseCommand.currentPath.resolve(this.args.get(0));

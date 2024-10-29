@@ -22,11 +22,6 @@ public class mvCommand extends BaseCommand{
                 + "    [destination]: The destination file or directory to move to.\n";
     }
     @Override
-    protected Pattern getRegexPattern() {
-        return Pattern.compile("^[a-zA-Z0-9_.\\-/:\\\\ ]+$");
-    }
-
-    @Override
     protected String executeCommand(String Command) {
         StringBuilder result = new StringBuilder();
         try {
