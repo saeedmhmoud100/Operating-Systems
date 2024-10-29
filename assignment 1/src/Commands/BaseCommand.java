@@ -37,8 +37,7 @@ public abstract class BaseCommand {
     protected Pattern getRegexPattern() {
         return RegexPattern;
     }
-    protected boolean ValidateArgs(List<String> args) {
-        boolean valid = false;
+    protected String ValidateArgs(List<String> args) {
         int additionalArgs = 0;
 
         if (this.allArgsAvailable.contains(">") || this.allArgsAvailable.contains(">>")) {
@@ -58,14 +57,12 @@ public abstract class BaseCommand {
         try {
 
             if (args.size() < this.minArgs || args.size() > this.maxArgs + additionalArgs) {
-                valid = false;
                 throw new IllegalArgumentException("Invalid number of arguments"
                         + " Expected: " + this.minArgs + " to " + (this.maxArgs + additionalArgs)
                         + "\nGot: " + args.size()
                         + "\nUse " + this.main_command + " -h or --help for help");
             }
 
-            valid = true;
             if (!args.isEmpty()) {
                 for (String arg : args) {
                     if (this.allArgsAvailable.contains(arg)) {
@@ -84,11 +81,10 @@ public abstract class BaseCommand {
                 }
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            valid = false;
+            return e.getMessage();
         }
 
-        return valid;
+        return "";
     }
 
 
@@ -201,12 +197,12 @@ public abstract class BaseCommand {
         return execute(List.of());
     }
     public final String execute(List<String> args) {
-        if(args.get(0).equals(main_command)){
+        if(!args.isEmpty() && args.get(0).equals(main_command)){
             args = args.subList(1, args.size());
         }
-
-        if (!this.ValidateArgs(args)) {
-            return "";
+        String valid = ValidateArgs(args);
+        if (!valid.isEmpty()) {
+            return valid;
         }
         if (this.args.contains("-h") || this.args.contains("--help") || this.args.contains("-help") || this.args.contains("help")) {
             return print(help());
