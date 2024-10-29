@@ -19,13 +19,15 @@ public class TouchCommand extends BaseCommand {
     }
 
     @Override
-    protected void executeCommandForWindows(String Command){
+    protected String executeCommandForWindows(String Command){
+        StringBuilder result = new StringBuilder();
         Path newDir = BaseCommand.currentPath;
         try {
             Files.createFile(newDir.resolve(this.args.get(0)));
         } catch (Exception e) {
-            System.out.println("Error creating file");
+            result.append("Error creating file").append("\n");
         }
+        return result.toString();
     }
 
 }

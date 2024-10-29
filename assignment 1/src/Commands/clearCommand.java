@@ -16,15 +16,17 @@ public class clearCommand extends BaseCommand{
     }
 
     @Override
-    protected void executeCommandForWindows(String command) {
+    protected String executeCommandForWindows(String command) {
+        StringBuilder result = new StringBuilder();
         try {
             if(System.console() != null){
                 new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
             }else{
-                    System.out.println("\n".repeat(50));
+                result.append("\n".repeat(50));
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            result.append(e.getMessage()+"\n");
         }
+        return result.toString();
     }
 }

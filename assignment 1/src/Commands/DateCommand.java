@@ -9,8 +9,10 @@ public class DateCommand extends BaseCommand{
     }
 
     @Override
-    public void execute(List<String> args) {
-        System.out.println("Date: " + java.time.LocalDate.now());
+    public String executeCommand(String command) {
+        StringBuilder result = new StringBuilder();
+        result.append("Date: " + java.time.LocalDate.now()+"\n");
+        return result.toString();
     }
     @Override
     protected void help() {

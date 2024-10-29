@@ -20,12 +20,14 @@ public class mkdirCommand extends BaseCommand{
 
 
     @Override
-    protected void executeCommand(String command) {
+    protected String executeCommand(String command) {
+        StringBuilder result = new StringBuilder();
         try {
             Path fullPath = BaseCommand.currentPath.resolve(this.args.get(0));
             Files.createDirectories(fullPath);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            result.append(e.getMessage()).append("\n");
         }
+        return result.toString();
     }
 }

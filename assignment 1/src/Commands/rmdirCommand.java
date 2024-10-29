@@ -20,16 +20,18 @@ public class rmdirCommand extends BaseCommand{
 
 
     @Override
-    protected void executeCommand(String command) {
+    protected String executeCommand(String command) {
+        StringBuilder result = new StringBuilder();
         try {
             Path path = BaseCommand.currentPath.resolve(args.get(0));
             if (Files.exists(path) && Files.isDirectory(path)){
                 Files.delete(path);
             } else {
-                System.out.println("Directory does not exist");
+                result.append("Directory does not exist").append("\n");
             }
         } catch (Exception e) {
-            System.out.println("Invalid directory");
+            result.append("Invalid directory").append("\n");
         }
+        return result.toString();
     }
 }

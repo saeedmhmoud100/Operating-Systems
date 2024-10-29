@@ -26,9 +26,11 @@ public class cpCommand extends BaseCommand{
     }
 
     @Override
-    protected void executeCommand(String Command) {
+    protected String executeCommand(String Command) {
+        StringBuilder result = new StringBuilder();
         Path source = BaseCommand.currentPath.resolve(this.args.get(0));
         Path destination = Paths.get(this.args.get(1));
+
         try {
             if(!Files.exists(source)){
                 throw new Exception("Source does not exist");
@@ -38,7 +40,8 @@ public class cpCommand extends BaseCommand{
             }
             Files.copy(source, destination.resolve(source.getFileName()));
         } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
+            result.append("Error: " + e.getMessage()+"\n");
         }
+        return result.toString();
     }
 }

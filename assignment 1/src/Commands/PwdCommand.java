@@ -16,7 +16,9 @@ public class PwdCommand extends BaseCommand{
     }
 
     @Override
-    protected void executeCommandForWindows(String command) {
-        System.out.println(BaseCommand.currentPath.toString());
+    protected String executeCommandForWindows(String command) {
+        StringBuilder result = new StringBuilder();
+        result.append(BaseCommand.currentPath.toString()).append("\n");
+        return result.toString();
     }
 }

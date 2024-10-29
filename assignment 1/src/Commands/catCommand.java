@@ -23,19 +23,24 @@ public class catCommand extends BaseCommand{
     }
 
     @Override
-    protected void executeCommandForWindows(String command){
+    protected String executeCommandForWindows(String command){
+        StringBuilder result = new StringBuilder();
         try {
             Path path = currentPath.resolve(args.get(0));
             if (Files.isDirectory(path)) {
-                System.out.println("cat: " + args.get(0) + ": Is a directory");
+                result.append("cat: " + args.get(0) + ": Is a directory").append("\n");
             } else if (Files.exists(path)) {
-                Files.lines(path).forEach(System.out::println);
+                List<String> lines = Files.readAllLines(path);
+                for (String line : lines) {
+                    result.append(line).append("\n");
+                }
             } else {
-                System.out.println("cat: " + args.get(0) + ": No such file or directory");
+                result.append("cat: " + args.get(0) + ": No such file or directory").append("\n");
             }
         } catch (Exception e) {
-            System.out.println("cat: " + args.get(0) + ": No such file or directory");
+            result.append("cat: " + args.get(0) + ": No such file or directory").append("\n");
         }
+        return result.toString();
     }
 
 }

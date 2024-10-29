@@ -20,16 +20,19 @@ public class rmCommand extends BaseCommand{
 
 
     @Override
-    protected void executeCommand(String command) {
+    protected String executeCommand(String command) {
+        StringBuilder result = new StringBuilder();
         try {
             Path path = BaseCommand.currentPath.resolve(args.get(0));
             if (Files.exists(path) && !Files.isDirectory(path)){
                 Files.delete(path);
             } else {
-                System.out.println("File does not exist");
+                result.append("File does not exist").append("\n");
             }
         } catch (Exception e) {
-            System.out.println("Invalid File Name");
+            result.append("Invalid File Name").append("\n");
         }
+
+        return result.toString();
     }
 }

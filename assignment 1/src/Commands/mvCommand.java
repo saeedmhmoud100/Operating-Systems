@@ -28,7 +28,8 @@ public class mvCommand extends BaseCommand{
     }
 
     @Override
-    protected void executeCommand(String Command) {
+    protected String executeCommand(String Command) {
+        StringBuilder result = new StringBuilder();
         try {
                 String fileName = args.get(0);
                 Path source = currentPath.resolve(fileName);
@@ -37,12 +38,12 @@ public class mvCommand extends BaseCommand{
                 }
                 Path destination = Paths.get(args.get(1));
                 if(!Files.exists(destination) || !Files.isDirectory(destination)){
-                    System.out.println(source);
                     throw new IllegalArgumentException("mv: cannot move '" + destination + "': No such file or directory");
                 }
                 Files.move(source, destination.resolve(source.getFileName()));
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            result.append(e.getMessage()).append("\n");
         }
+        return result.toString();
     }
 }

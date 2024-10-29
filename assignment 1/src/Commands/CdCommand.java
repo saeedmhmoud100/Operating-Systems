@@ -20,7 +20,8 @@ public class CdCommand extends BaseCommand {
     }
 
     @Override
-    protected void executeCommand(String Command){
+    protected String executeCommand(String Command){
+        StringBuilder result = new StringBuilder();
         Path newDir = BaseCommand.currentPath;
         if (args.get(0).equals("../") || args.get(0).equals("..")) {
             newDir = newDir.resolve("../").normalize();
@@ -30,9 +31,12 @@ public class CdCommand extends BaseCommand {
         if (Files.exists(newDir) && Files.isDirectory(newDir)) {
             BaseCommand.currentPath = newDir;
             System.setProperty("user.dir", newDir.toString());
+            result.append(newDir.toString());
         } else {
-            System.out.println("Directory does not exist");
+            result.append("Directory does not exist");
         }
+
+        return result.toString();
     }
 
 }

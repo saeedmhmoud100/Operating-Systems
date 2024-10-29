@@ -1,11 +1,10 @@
 package Commands;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 public abstract class BaseCommand {
@@ -13,6 +12,7 @@ public abstract class BaseCommand {
     boolean useRegex = false;
     int minArgs = 0;
     int maxArgs = Integer.MAX_VALUE;
+    int outputToFileIndex = -1;
     protected static final Pattern RegexPattern = Pattern.compile("^[a-zA-Z0-9_.-]+$");
     List<String> allArgsAvailable;
     String main_command;
@@ -25,6 +25,8 @@ public abstract class BaseCommand {
         this.allArgsAvailable.add("--help");
         this.allArgsAvailable.add("help");
         this.allArgsAvailable.add("-help");
+        this.allArgsAvailable.add(">");
+        this.allArgsAvailable.add(">>");
     }
 
     abstract protected void help();
@@ -35,12 +37,28 @@ public abstract class BaseCommand {
     }
     protected boolean ValidateArgs(List<String> args) {
         boolean valid = false;
+        int additionalArgs = 0;
+
+        if (this.allArgsAvailable.contains(">") || this.allArgsAvailable.contains(">>")) {
+            additionalArgs = 2;
+            int index = args.indexOf(">");
+            if(index == -1){
+                index = args.indexOf(">>");
+            }
+
+            if(index != -1){
+                if(args.size() > index + 1){
+                    this.outputToFileIndex = index +1;
+                }
+            }
+        }
+
         try {
 
-            if (args.size() < this.minArgs || args.size() > this.maxArgs) {
+            if (args.size() < this.minArgs || args.size() > this.maxArgs + additionalArgs) {
                 valid = false;
                 throw new IllegalArgumentException("Invalid number of arguments"
-                        + " Expected: " + this.minArgs + " to " + this.maxArgs
+                        + " Expected: " + this.minArgs + " to " + this.maxArgs + additionalArgs
                         + "\nGot: " + args.size()
                         + "\nUse " + this.main_command + " -h or --help for help");
             }
@@ -55,6 +73,8 @@ public abstract class BaseCommand {
                             if (getRegexPattern().matcher(arg).matches()) {
                                 this.args.add(arg);
                             }
+                        }else if(this.outputToFileIndex!=-1 && (this.outputToFileIndex == args.indexOf(arg) || this.outputToFileIndex+1 == args.indexOf(arg))) {
+                            this.args.add(arg);
                         }else{
                             throw new IllegalArgumentException("Invalid argument: " + arg);
                         }
@@ -62,9 +82,10 @@ public abstract class BaseCommand {
                 }
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage() + "T");
             valid = false;
         }
+
         return valid;
     }
 
@@ -80,51 +101,73 @@ public abstract class BaseCommand {
     }
 
 
-    protected void executeCommandForLinux(String command) {
+    protected String executeCommandForLinux(String command) {
         Runtime runtime = Runtime.getRuntime();
+        String result = "";
         try {
             String currentPath = BaseCommand.currentPath.toString();
             Process process = runtime.exec(new String[]{"/bin/sh", "-c","cd '" + currentPath + "' && "+command});
-
-            ProcessOutput(process);
+            result = ProcessOutput(process);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            result = (e.getMessage());
         }
+
+        return result;
     }
 
-    protected void executeCommandForWindows(String command) {
+    protected String executeCommandForWindows(String command) {
         Runtime runtime = Runtime.getRuntime();
+        String result = "";
         try {
             String fullCommand = "cd /d \"" + BaseCommand.currentPath.toString() + "\" && " + command;
             Process process = runtime.exec(new String[]{"cmd", "/c", fullCommand});
-            ProcessOutput(process);
+            result = ProcessOutput(process);
         } catch (IOException e) {
-            System.out.println(e.getMessage());
+            result =(e.getMessage());
         }
+
+        return result;
     }
 
-    private void ProcessOutput(Process process) throws IOException {
+    private String ProcessOutput(Process process) throws IOException {
+        StringBuilder result = new StringBuilder();
         try (BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                System.out.println(line);
+                result.append(line).append("\n");
             }
             int exitCode = process.waitFor();
         } catch (InterruptedException e) {
-            System.out.println("Process was interrupted: " + e.getMessage());
+            result.append("Process was interrupted: " + e.getMessage());
         }
+        return result.toString();
     }
 
-    protected void executeCommand(String command) {
+    protected void print(String data){
+        if(this.outputToFileIndex != -1) {
+            String fileName = this.args.get(this.outputToFileIndex);
+            try {
+                FileWriter fileWriter = new FileWriter(fileName, this.outputToFileIndex-1 == this.args.indexOf(">>"));
+                fileWriter.write(data);
+                fileWriter.close();
+            } catch (IOException e) {
+                System.out.println("Error writing to file: " + e.getMessage());
+            }
+        }else{
+            System.out.println(data);
+        }
+    }
+    protected String executeCommand(String command) {
         String os = System.getProperty("os.name").toLowerCase();
+        String result = "";
         if (os.contains("win")) {
-            executeCommandForWindows(command);
+            result = executeCommandForWindows(command);
         } else {
-            executeCommandForLinux(command);
+            result = executeCommandForLinux(command);
         }
+        return result;
     }
-
-    public void execute(List<String> args) {
+    public final void execute(List<String> args) {
 
         if (!this.ValidateArgs(args)) {
             return;
@@ -134,7 +177,10 @@ public abstract class BaseCommand {
             return;
         }
         String command = this.getFullCommand();
-        executeCommand(command);
+        String result = executeCommand(command);
+        if(!result.isEmpty()){
+            print(result);
+        }
     }
 
 

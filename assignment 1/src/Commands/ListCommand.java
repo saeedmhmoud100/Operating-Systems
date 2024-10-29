@@ -28,14 +28,17 @@ public class ListCommand extends BaseCommand {
     }
 
     @Override
-    protected void executeCommandForWindows(String command) {
+    protected String executeCommandForWindows(String command) {
+
         File dir = BaseCommand.currentPath.toFile();
         File[] files = dir.listFiles();
+        StringBuilder res = new StringBuilder();
         if (files != null) {
             for (File file : files) {
-                System.out.println(file.getName());
+                res.append(file.getName() + "\n");
             }
         }
+        return res.toString();
     }
 
 }
