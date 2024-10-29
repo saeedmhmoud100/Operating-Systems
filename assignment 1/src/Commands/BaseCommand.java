@@ -193,6 +193,10 @@ public abstract class BaseCommand {
 
         return args;
     }
+
+    public final String execute(String input) {
+        return execute(ParseInputStringToList(input));
+    }
     public final String execute() {
         return execute(List.of());
     }

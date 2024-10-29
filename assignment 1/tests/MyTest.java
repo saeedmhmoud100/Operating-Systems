@@ -1,7 +1,4 @@
-import Commands.BaseCommand;
-import Commands.DateCommand;
-import Commands.ListCommand;
-import Commands.PwdCommand;
+import Commands.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -34,6 +31,19 @@ public class MyTest {
         }
     }
 
+    @Test
+    public void cdTest(){
+        BaseCommand command = new CdCommand();
+        BaseCommand.currentPath = Path.of(System.getProperty("user.dir"));
+        Path path = Path.of(System.getProperty("user.dir"));
+
+        Assert.assertEquals(command.execute("nonexistent").trim(), "Directory does not exist");
+        Assert.assertEquals(BaseCommand.currentPath.toString(), path.toString());
+        Assert.assertEquals(command.execute(" ").trim(),
+                "Invalid number of arguments Expected: 1 to 3\n" +
+                "Got: 0\n" +
+                "Use cd -h or --help for help");
+    }
     @Test
     public void pwdTest() {
         BaseCommand command = new PwdCommand();
