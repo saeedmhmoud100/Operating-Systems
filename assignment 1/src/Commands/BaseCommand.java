@@ -146,6 +146,7 @@ public abstract class BaseCommand {
     }
 
     protected String print(String data){
+        data = data.trim();
         if(this.outputToFileIndex != -1) {
             String fileName = this.args.get(this.outputToFileIndex);
             try {
@@ -171,10 +172,38 @@ public abstract class BaseCommand {
         return result;
     }
 
+
+    static public List<String> ParseInputStringToList(String input) {
+        List<String> args = new ArrayList<>();
+        boolean inQuotes = false;
+
+        StringBuilder currentArg = new StringBuilder();
+
+        for (char c : input.toCharArray()) {
+            if (c == '\"') {
+                inQuotes = !inQuotes;
+            } else if (c == ' ' && !inQuotes) {
+                if (!currentArg.isEmpty()) {
+                    args.add(currentArg.toString());
+                    currentArg.setLength(0);
+                }
+            } else {
+                currentArg.append(c);
+            }
+        }
+        if (!currentArg.isEmpty()) {
+            args.add(currentArg.toString());
+        }
+
+        return args;
+    }
     public final String execute() {
         return execute(List.of());
     }
     public final String execute(List<String> args) {
+        if(args.get(0).equals(main_command)){
+            args = args.subList(1, args.size());
+        }
 
         if (!this.ValidateArgs(args)) {
             return "";

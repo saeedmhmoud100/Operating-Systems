@@ -30,27 +30,7 @@ public class CommandHandler {
 
     private List<String> getInput() {
         String input = scanner.nextLine();
-        List<String> args = new ArrayList<>();
-        boolean inQuotes = false;
-
-        StringBuilder currentArg = new StringBuilder();
-
-        for (char c : input.toCharArray()) {
-            if (c == '\"') {
-                inQuotes = !inQuotes;
-            } else if (c == ' ' && !inQuotes) {
-                if (currentArg.length() > 0) {
-                    args.add(currentArg.toString());
-                    currentArg.setLength(0);
-                }
-            } else {
-                currentArg.append(c);
-            }
-        }
-        if (currentArg.length() > 0) {
-            args.add(currentArg.toString());
-        }
-        return args;
+        return BaseCommand.ParseInputStringToList(input);
     }
 
     public boolean executeCommand() {
@@ -60,7 +40,6 @@ public class CommandHandler {
             return true;
         }
         String command = (String) input.get(0);
-        List arguments = input.subList(1, input.size());
         BaseCommand commandObj = null;
 
 
@@ -81,7 +60,7 @@ public class CommandHandler {
             System.out.println("Command not found");
             return true;
         }
-        commandObj.execute(arguments);
+        commandObj.execute(input);
         return true;
     }
 

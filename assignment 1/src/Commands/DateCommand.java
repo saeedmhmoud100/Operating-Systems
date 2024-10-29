@@ -11,7 +11,7 @@ public class DateCommand extends BaseCommand{
     @Override
     public String executeCommand(String command) {
         StringBuilder result = new StringBuilder();
-        result.append("Date: " + java.time.LocalDate.now()+"\n");
+        result.append(java.time.LocalDate.now()+"\n");
         return result.toString();
     }
     @Override
