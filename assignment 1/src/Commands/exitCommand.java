@@ -10,8 +10,8 @@ public class exitCommand extends BaseCommand{
     }
 
     @Override
-    protected void help() {
-        System.out.println("Usage: exit");
-        System.out.println("Exits the command line system.");
+    protected String help() {
+        return ("exit: exit\n" +
+                "    Exit the terminal\n");
     }
 }

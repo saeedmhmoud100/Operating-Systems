@@ -4,7 +4,6 @@ import java.io.*;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 public abstract class BaseCommand {
@@ -29,7 +28,7 @@ public abstract class BaseCommand {
         this.allArgsAvailable.add(">>");
     }
 
-    abstract protected void help();
+    abstract protected String help();
 
 
     protected Pattern getRegexPattern() {
@@ -82,7 +81,7 @@ public abstract class BaseCommand {
                 }
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage() + "T");
+            System.out.println(e.getMessage());
             valid = false;
         }
 
@@ -173,7 +172,7 @@ public abstract class BaseCommand {
             return;
         }
         if (this.args.contains("-h") || this.args.contains("--help") || this.args.contains("-help") || this.args.contains("help")) {
-            this.help();
+            print(help());
             return;
         }
         String command = this.getFullCommand();

@@ -10,9 +10,9 @@ public class clearCommand extends BaseCommand{
     }
 
     @Override
-    protected void help() {
-        System.out.println("clear: clear");
-        System.out.println("\tClear the terminal screen.");
+    protected String help() {
+        return ("clear: clear\n" +
+                "    Clear the terminal screen.\n");
     }
 
     @Override

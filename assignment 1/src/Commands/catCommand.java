@@ -13,8 +13,8 @@ public class catCommand extends BaseCommand{
     }
 
     @Override
-    protected void help() {
-        System.out.println("cat: cat [FILE]\n" +
+    protected String help() {
+        return ("cat: cat [FILE]\n" +
                 "    Display the contents of FILE\n" +
                 "    If FILE is a directory, display the contents of all files in the directory\n" +
                 "    If FILE is not found, display an error message\n" +

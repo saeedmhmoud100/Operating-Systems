@@ -15,7 +15,8 @@ public class DateCommand extends BaseCommand{
         return result.toString();
     }
     @Override
-    protected void help() {
-        System.out.println("Prints the current date");
+    protected String help() {
+        return ("date: date\n" +
+                "    Print the current date\n");
     }
 }

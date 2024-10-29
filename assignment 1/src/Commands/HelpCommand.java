@@ -24,8 +24,8 @@ public class HelpCommand extends BaseCommand{
         result.append("pwd - Show the current directory"+"\n");
         result.append("clear - Clear the screen"+"\n");
         result.append("date - Show the current date and time"+"\n");
-        result.append(">> - Append text to a file"+"\n");
-        result.append("> - Overwrite text to a file"+"\n");
+        result.append(">> - Append output to a file"+"\n");
+        result.append("> - Overwrite output to a file"+"\n");
         result.append("help - Show this message"+"\n");
         result.append("exit - Exit the program"+"\n");
 
@@ -33,7 +33,8 @@ public class HelpCommand extends BaseCommand{
     }
 
     @Override
-    protected void help() {
-        System.out.println("Usage: help");
+    protected String help() {
+        return ("help: help\n" +
+                "    Display information about the available commands\n");
     }
 }

@@ -15,13 +15,12 @@ public class mvCommand extends BaseCommand{
     }
 
     @Override
-    protected void help() {
-        System.out.println("mv: mv [source] [destination]");
-        System.out.println("\tMove a file or directory to another location.");
-        System.out.println("\t[source]: The source file or directory to move.");
-        System.out.println("\t[destination]: The destination file or directory to move to.");
+    protected String help() {
+        return ("mv: mv [source] [destination]\n" +
+                "    Move a file or directory to another location.\n")
+                + "    [source]: The source file or directory to move.\n"
+                + "    [destination]: The destination file or directory to move to.\n";
     }
-
     @Override
     protected Pattern getRegexPattern() {
         return Pattern.compile("^[a-zA-Z0-9_.\\-/:\\\\ ]+$");

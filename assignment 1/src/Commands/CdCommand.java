@@ -14,9 +14,9 @@ public class CdCommand extends BaseCommand {
     }
 
     @Override
-    protected void help() {
-        System.out.println("Usage: cd [directory]");
-        System.out.println("Change the current directory to the specified directory.");
+    protected String help() {
+        return ("cd: cd [directory]\n" +
+                "    Change the current directory to the specified directory.\n");
     }
 
     @Override

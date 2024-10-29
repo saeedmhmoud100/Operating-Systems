@@ -13,9 +13,9 @@ public class rmdirCommand extends BaseCommand{
     }
 
     @Override
-    protected void help() {
-        System.out.println("Usage: rmdir <directory>");
-        System.out.println("Remove a directory");
+    protected String help() {
+        return ("rmdir: rmdir [directory]\n" +
+                "    Remove a directory\n");
     }
 
 

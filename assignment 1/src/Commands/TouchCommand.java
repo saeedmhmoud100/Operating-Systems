@@ -14,8 +14,9 @@ public class TouchCommand extends BaseCommand {
     }
 
     @Override
-    protected void help() {
-        System.out.println("Usage: touch <filename>");
+    protected String help() {
+        return ("touch: touch [file]\n" +
+                "    Create a file\n");
     }
 
     @Override

@@ -13,9 +13,9 @@ public class mkdirCommand extends BaseCommand{
     }
 
     @Override
-    protected void help() {
-        System.out.println("Usage: mkdir <directory>");
-        System.out.println("Create a directory");
+    protected String help() {
+        return ("mkdir: mkdir [directory]\n" +
+                "    Create a directory\n");
     }
 
 

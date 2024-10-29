@@ -11,20 +11,19 @@ public class ListCommand extends BaseCommand {
     }
 
     @Override
-    protected void help() {
-        System.out.println("Usage: ls [OPTION]... [FILE]...");
-        System.out.println("List information about the FILEs (the current directory by default).");
-//        System.out.println("Sort entries alphabetically if none of -cftuvSUX nor --sort is specified.");
-        System.out.println();
-        System.out.println("Mandatory arguments to long options are mandatory for short options too.");
-        System.out.println("  -A, --almost-all           do not list implied . and ..");
-        System.out.println("  -a, --all                  do not ignore entries starting with .");
-        System.out.println("  -l                         use a long listing format");
-        System.out.println("  -r, --reverse              reverse order while sorting");
-        System.out.println("  -t                         sort by modification time, newest first");
-        System.out.println("  -S                         sort by file size");
-        System.out.println("  -R, --recursive            list subdirectories recursively");
-        System.out.println("  -h, --human-readable       with -l and -s, print sizes like 1K 234M 2G etc.");
+    protected String help() {
+        return "Usage: ls [OPTION]... [FILE]...\n"
+                + "List information about the FILEs (the current directory by default).\n"
+                + "Mandatory arguments to long options are mandatory for short options too.\n"
+                + "  -A, --almost-all           do not list implied . and ..\n"
+                + "  -a, --all                  do not ignore entries starting with .\n"
+                + "  -l                         use a long listing format\n"
+                + "  -r, --reverse              reverse order while sorting\n"
+                + "  -t                         sort by modification time, newest first\n"
+                + "  -S                         sort by file size\n"
+                + "  -R, --recursive            list subdirectories recursively\n"
+                + "  -h, --human-readable       with -l and -s, print sizes like 1K 234M 2G etc.\n";
+
     }
 
     @Override

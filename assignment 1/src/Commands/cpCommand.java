@@ -15,9 +15,9 @@ public class cpCommand extends BaseCommand{
     }
 
     @Override
-    protected void help() {
-        System.out.println("Usage: cp <source> <destination>");
-
+    protected String help() {
+        return ("cp: cp [source] [destination]\n" +
+                "    Copy the file from source to destination\n");
     }
 
     @Override

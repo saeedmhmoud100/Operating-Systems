@@ -13,9 +13,9 @@ public class rmCommand extends BaseCommand{
     }
 
     @Override
-    protected void help() {
-        System.out.println("Usage: rm <file>");
-        System.out.println("Remove a file");
+    protected String help() {
+        return ("rm: rm [file]\n" +
+            "    Remove a file\n");
     }
 
 

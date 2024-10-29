@@ -10,9 +10,9 @@ public class PwdCommand extends BaseCommand{
     }
 
     @Override
-    protected void help() {
-        System.out.println("Usage: pwd");
-        System.out.println("Show the current directory");
+    protected String help() {
+        return ("pwd: pwd\n" +
+                "    Show the current directory\n");
     }
 
     @Override
